@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-
+import { ProductModule } from './product/product.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ProductModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: true,
+      autoSchemaFile: 'schema.gql',
+      installSubscriptionHandlers: true,
+      path: '/product',
+    }),
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
