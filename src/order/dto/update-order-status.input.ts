@@ -1,10 +1,7 @@
-import { InputType, PartialType, OmitType, Field, ID } from '@nestjs/graphql';
-import { Order } from '../order.model';
+import { InputType, Field, ID } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateOrderStatusInput extends PartialType(
-  OmitType(Order, ['items', 'orderDate', 'totalPrice'] as const),
-) {
+export class UpdateOrderStatusInput {
   @Field(() => ID)
   id: string;
 

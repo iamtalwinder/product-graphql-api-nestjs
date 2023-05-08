@@ -5,6 +5,6 @@ import { ProductModule } from 'src/product/product.module';
 
 @Module({
   providers: [OrderResolver, OrderService],
-  imports: [ProductModule]
+  imports: [ProductModule],
 })
 export class OrderModule {}
