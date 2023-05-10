@@ -2,10 +2,13 @@ import { Module } from '@nestjs/common';
 import { ProductModule } from './product/product.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './order/order.module';
+import environment from './environment';
 @Module({
   imports: [
     ProductModule,
+    MongooseModule.forRoot(environment.mongodb),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: true,

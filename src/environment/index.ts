@@ -20,6 +20,7 @@ function validateEnvironment(plainEnv: EnvironmentInterface): EnvironmentDto {
 
 const environment: EnvironmentInterface = {
   port: parseInt(env.PORT),
+  mongodb: env.MONGODB_URL,
 };
 
 export default validateEnvironment(environment);
