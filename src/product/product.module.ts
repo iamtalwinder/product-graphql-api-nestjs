@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { ProductResolver } from './product.resolver';
+import { ProductService } from './services';
+import { ProductResolver } from './resolvers';
 
 @Module({
   exports: [ProductService],

@@ -2,7 +2,11 @@ import { v4 as uuid } from 'uuid';
 import { Schema, Document } from 'mongoose';
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 
-import { SchemaFactory, Schema as SchemaDecorator, Prop } from '@nestjs/mongoose';
+import {
+  SchemaFactory,
+  Schema as SchemaDecorator,
+  Prop,
+} from '@nestjs/mongoose';
 
 @ObjectType()
 @SchemaDecorator({
