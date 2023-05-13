@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './order/order.module';
+import { UserModule } from './user/user.module';
 import environment from './environment';
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import environment from './environment';
       path: '/product',
     }),
     OrderModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
