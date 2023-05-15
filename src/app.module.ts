@@ -8,7 +8,6 @@ import { UserModule } from './user/user.module';
 import environment from './environment';
 @Module({
   imports: [
-    ProductModule,
     MongooseModule.forRoot(environment.mongodb),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -17,6 +16,7 @@ import environment from './environment';
       installSubscriptionHandlers: true,
       path: '/product',
     }),
+    ProductModule,
     OrderModule,
     UserModule,
   ],

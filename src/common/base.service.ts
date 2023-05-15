@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Model, UpdateWriteOpResult } from 'mongoose';
+import { Document, Model, UpdateWriteOpResult } from 'mongoose';
 import { DeleteResult } from 'mongodb';
-import { Base } from './base.entity';
-
 @Injectable()
-export abstract class BaseService<T extends Base> {
-  constructor(protected readonly model: Model<T>) {}
+export abstract class BaseService<T extends Document> {
+  protected model: Model<T>;
+
+  constructor(model: Model<T>) {
+    this.model = model;
+  }
 
   async find(filter = {}): Promise<T[]> {
     return this.model.find(filter).exec();

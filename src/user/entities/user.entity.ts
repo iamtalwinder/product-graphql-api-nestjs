@@ -1,7 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { UserRole } from '../enums';
+import { Document } from 'mongoose';
 import { Base } from 'src/common';
+import { UserRole } from '../enums';
 
 @ObjectType()
 @Schema({
