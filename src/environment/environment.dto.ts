@@ -1,5 +1,18 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { JwtOptionsInterface } from 'src/auth/interfaces';
 import { EnvironmentInterface } from './environment.interface';
+
+class JwtOptionsDto implements JwtOptionsInterface {
+  @IsString()
+  public secret: string;
+
+  @IsString()
+  public accessTokenExp: string;
+
+  @IsString()
+  public refreshTokenExp: string;
+}
 
 export class EnvironmentDto implements EnvironmentInterface {
   @IsNumber()
@@ -7,4 +20,8 @@ export class EnvironmentDto implements EnvironmentInterface {
 
   @IsString()
   public mongodb: string;
+
+  @ValidateNested()
+  @Type(() => JwtOptionsDto)
+  public jwtOptions: JwtOptionsDto;
 }

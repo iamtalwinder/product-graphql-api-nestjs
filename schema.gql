@@ -21,6 +21,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AuthTokenOutput {
+  accessToken: String!
+  refreshToken: String!
+}
+
 type Query {
   products: [Product!]!
   order(id: String!): Order!
@@ -31,6 +36,8 @@ type Mutation {
   createOrder(createOrderInput: CreateOrderInput!): Order!
   updateOrderStatus(updateOrderStatusInput: UpdateOrderStatusInput!): Order!
   deleteOrder(id: String!): Boolean!
+  register(registerInput: RegisterInput!): AuthTokenOutput!
+  login(loginInput: LoginInput!): AuthTokenOutput!
 }
 
 input CreateOrderInput {
@@ -44,4 +51,16 @@ input CreateOrderInput {
 input UpdateOrderStatusInput {
   id: ID!
   status: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }

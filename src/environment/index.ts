@@ -19,8 +19,13 @@ function validateEnvironment(plainEnv: EnvironmentInterface): EnvironmentDto {
 }
 
 const environment: EnvironmentInterface = {
-  port: parseInt(env.PORT),
+  port: parseInt(env.APP_PORT),
   mongodb: env.MONGODB_URL,
+  jwtOptions: {
+    secret: env.JWT_SECRET,
+    accessTokenExp: env.JWT_ACCESS_TOKEN_EXPIRATION,
+    refreshTokenExp: env.JWT_REFRESH_TOKEN_EXPIRATION,
+  },
 };
 
 export default validateEnvironment(environment);
