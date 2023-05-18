@@ -1,6 +1,6 @@
 import { IsNumber, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { JwtOptionsInterface } from 'src/auth/interfaces';
+import { JwtOptionsInterface } from 'src/auth';
 import { EnvironmentInterface } from './environment.interface';
 
 class JwtOptionsDto implements JwtOptionsInterface {

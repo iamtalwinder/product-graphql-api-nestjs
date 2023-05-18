@@ -1,4 +1,4 @@
-import { JwtOptionsInterface } from 'src/auth/interfaces';
+import { JwtOptionsInterface } from 'src/auth';
 
 export interface EnvironmentInterface {
   port: number;
