@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { TokenPayload } from '../interfaces';
+import environment from 'src/environment';
+import { JwtOptionsInterface, TokenPayload } from '../interfaces';
+
+const jwtOptions: JwtOptionsInterface = environment.jwtOptions;
 
 @Injectable()
 export class TokenService {
@@ -10,10 +13,10 @@ export class TokenService {
     payload: TokenPayload,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: '15m',
+      expiresIn: jwtOptions.accessTokenExp,
     });
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: '7d',
+      expiresIn: jwtOptions.refreshTokenExp,
     });
 
     return { accessToken, refreshToken };
@@ -21,7 +24,7 @@ export class TokenService {
 
   async refreshToken(payload: TokenPayload): Promise<string> {
     return this.jwtService.sign(payload, {
-      expiresIn: '15m',
+      expiresIn: jwtOptions.refreshTokenExp,
     });
   }
 }
