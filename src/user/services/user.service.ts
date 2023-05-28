@@ -9,4 +9,10 @@ export class UserService extends BaseService<UserDocument> {
   constructor(@InjectModel(User.name) userModel: Model<UserDocument>) {
     super(userModel);
   }
+
+  public async doesUserWithEmailExist(email: string): Promise<boolean> {
+    const user: UserDocument = await this.findOne({ email });
+
+    return !!user;
+  }
 }
