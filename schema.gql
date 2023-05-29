@@ -38,6 +38,7 @@ type Mutation {
   deleteOrder(id: String!): Boolean!
   register(registerInput: RegisterInput!): AuthTokenOutput!
   login(loginInput: LoginInput!): AuthTokenOutput!
+  issueAnonymousToken: AuthTokenOutput!
 }
 
 input CreateOrderInput {

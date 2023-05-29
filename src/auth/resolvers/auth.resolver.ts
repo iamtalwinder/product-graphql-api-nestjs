@@ -15,4 +15,9 @@ export class AuthResolver {
   async login(@Args('loginInput') loginInput: LoginInput) {
     return this.authService.login(loginInput);
   }
+
+  @Mutation(() => AuthTokenOutput)
+  async issueAnonymousToken(): Promise<AuthTokenOutput> {
+    return this.authService.issueAnonymousToken();
+  }
 }
