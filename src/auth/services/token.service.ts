@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import environment from 'src/environment';
-import { JwtOptionsInterface, TokenPayload } from '../interfaces';
+import { TokenPayload } from 'src/common';
+import { JwtOptionsInterface } from '../interfaces';
 
 const jwtOptions: JwtOptionsInterface = environment.jwtOptions;
 
