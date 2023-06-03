@@ -21,7 +21,6 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
     );
 
-    console.log(requiredRoles)
     if (!requiredRoles) {
       return true; // If no specific roles are required, allow access.
     }
@@ -30,10 +29,10 @@ export class RolesGuard implements CanActivate {
     const { user } = ctx.getContext().req;
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(INSUFFICIENT_PERMISSION);
     }
 
-    const hasRole = requiredRoles.some((role) => user.roles?.includes(role));
+    const hasRole = requiredRoles.some((role) => user.role === role);
     if (!hasRole) {
       throw new UnauthorizedException(INSUFFICIENT_PERMISSION);
     }

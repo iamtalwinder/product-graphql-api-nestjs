@@ -18,7 +18,7 @@ export class User extends Base {
   firstName: string;
 
   @Field()
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   lastName: string;
 
   @Prop({ required: true })

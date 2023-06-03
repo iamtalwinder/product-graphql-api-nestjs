@@ -1,9 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { translationKeys, EncryptionService } from 'src/common';
-import { UserDocument, UserRole, UserService } from 'src/user';
-import { AuthTokenOutput, LoginInput, RegisterInput } from '../dtos';
+import { User, UserDocument, UserRole, UserService } from 'src/user';
+import {
+  AuthTokenOutput,
+  CreateUserInput,
+  LoginInput,
+  RegisterInput,
+} from '../dtos';
 import { TokenService } from './token.service';
+
+const EMAIL_ALREADY_EXISTS: string = translationKeys.auth.emailAlreadyExists;
+const INVALID_CREDENTIALS: string = translationKeys.auth.invalidCredentials;
 
 @Injectable()
 export class AuthService {
@@ -20,7 +28,7 @@ export class AuthService {
       await this.userService.doesUserWithEmailExist(email);
 
     if (userExists) {
-      throw new BadRequestException(translationKeys.auth.emailAlreadyExists);
+      throw new BadRequestException(EMAIL_ALREADY_EXISTS);
     }
 
     const user: UserDocument = await this.userService.create({
@@ -43,7 +51,7 @@ export class AuthService {
     const user = await this.userService.findOne({ email });
 
     if (!user) {
-      throw new BadRequestException(translationKeys.auth.invalidCredentials);
+      throw new BadRequestException(INVALID_CREDENTIALS);
     }
 
     const isPasswordValid = await EncryptionService.compare(
@@ -51,7 +59,7 @@ export class AuthService {
       user.password,
     );
     if (!isPasswordValid) {
-      throw new BadRequestException(translationKeys.auth.invalidCredentials);
+      throw new BadRequestException(INVALID_CREDENTIALS);
     }
 
     return this.tokenService.issueToken({
@@ -66,5 +74,24 @@ export class AuthService {
       id: uuidv4(),
       role: UserRole.anonymous,
     });
+  }
+
+  public async createUser(dto: CreateUserInput): Promise<User> {
+    const userExists: boolean = await this.userService.doesUserWithEmailExist(
+      dto.email,
+    );
+
+    if (userExists) {
+      throw new BadRequestException(EMAIL_ALREADY_EXISTS);
+    }
+
+    const hashedPassword = await EncryptionService.hash(dto.password);
+
+    const user: UserDocument = await this.userService.create({
+      ...dto,
+      password: hashedPassword,
+    });
+
+    return user.toObject();
   }
 }

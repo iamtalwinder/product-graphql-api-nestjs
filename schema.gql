@@ -26,6 +26,21 @@ type AuthTokenOutput {
   refreshToken: String!
 }
 
+type CreateUserOutput {
+  _id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: UserRole!
+}
+
+enum UserRole {
+  customer
+  admin
+  manager
+  anonymous
+}
+
 type Query {
   products: [Product!]!
   order(id: String!): Order!
@@ -39,6 +54,7 @@ type Mutation {
   register(registerInput: RegisterInput!): AuthTokenOutput!
   login(loginInput: LoginInput!): AuthTokenOutput!
   issueAnonymousToken: AuthTokenOutput!
+  createUser(createUserInput: CreateUserInput!): CreateUserOutput!
 }
 
 input CreateOrderInput {
@@ -64,4 +80,12 @@ input RegisterInput {
 input LoginInput {
   email: String!
   password: String!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  role: UserRole!
 }
