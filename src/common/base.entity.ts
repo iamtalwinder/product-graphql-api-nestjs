@@ -3,7 +3,9 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema } from '@nestjs/mongoose';
 
 @ObjectType({ isAbstract: true })
-@Schema({})
+@Schema({
+  timestamps: true,
+})
 export abstract class Base {
   @Field(() => ID)
   @Prop({ default: () => uuidv4() })
