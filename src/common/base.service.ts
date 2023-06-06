@@ -28,6 +28,26 @@ export abstract class BaseService<T extends Document> {
     return this.model.findByIdAndUpdate(id, update, { new: true }).exec();
   }
 
+  async findAllWithFilterAndCount(filter = {}, page?: number, limit?: number): Promise<{ documents: T[]; totalCount: number }> {
+    const query = this.model.find();
+
+    Object.keys(filter).forEach(key => {
+      if (filter[key] !== undefined) {
+        query.where(key).equals(filter[key]);
+      }
+    });
+
+    const totalCount = await this.model.countDocuments(filter).exec();
+
+    if (page !== undefined && limit !== undefined) {
+      query.skip((page - 1) * limit).limit(limit);
+    }
+
+    const documents = await query.exec();
+    console.log(documents)
+    return { documents, totalCount };
+  }
+
   public async create(dto: Partial<T>): Promise<T> {
     return this.model.create(dto);
   }
@@ -41,6 +61,10 @@ export abstract class BaseService<T extends Document> {
 
   public async deleteOne(filter = {}): Promise<DeleteResult> {
     return this.model.deleteOne(filter).exec();
+  }
+
+  public async deleteById(id: string): Promise<DeleteResult> {
+    return this.model.deleteOne({ _id: id }).exec();
   }
 
   public async deleteMany(filter = {}): Promise<DeleteResult> {
