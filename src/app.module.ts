@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { GqlErrorFormatter } from 'src/common';
 import { ProductModule } from 'src/product';
 import { OrderModule } from 'src/order';
@@ -13,10 +14,11 @@ import environment from 'src/environment';
     MongooseModule.forRoot(environment.mongodb),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      playground: true,
       autoSchemaFile: 'schema.gql',
+      playground: false,
       installSubscriptionHandlers: true,
       path: '/product',
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       formatError: GqlErrorFormatter.formatError,
     }),
     ProductModule,
