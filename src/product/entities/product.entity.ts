@@ -1,40 +1,50 @@
-import { v4 as uuid } from 'uuid';
 import { Schema, Document } from 'mongoose';
-import { Field, ObjectType, ID } from '@nestjs/graphql';
-
-import {
-  SchemaFactory,
-  Schema as SchemaDecorator,
-  Prop,
-} from '@nestjs/mongoose';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { Prop, SchemaFactory, Schema as SchemaDecorator } from '@nestjs/mongoose';
+import { Base } from 'src/common';
 
 @ObjectType()
-@SchemaDecorator({
-  timestamps: true,
-})
-export class Product {
-  @Field(() => ID)
-  @Prop({
-    default: uuid,
-  })
-  id: string;
-
+@SchemaDecorator()
+export class Product extends Base {
   @Field()
   @Prop({
     required: true,
   })
   name: string;
 
+  @Field()
+  @Prop({ required: true, unique: true })
+  sku: string;
+
   @Field({ nullable: true })
-  @Prop({
-    required: false,
-  })
+  @Prop()
   description?: string;
+
+  @Field()
+  @Prop({
+    required: true,
+  })
+  price: number;
+
+  @Field(() => String, { nullable: true })
+  @Prop(String)
+  category?: string;
+
+  @Field(() => [String], { nullable: 'itemsAndList' })
+  @Prop([String])
+  images?: string[];
+
+  @Field(() => [String], { nullable: 'itemsAndList' })
+  @Prop([String])
+  tags?: string[];
+
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }
 
-export interface ProductDocument extends Product, Document<string> {
-  _id: string;
-  id: string;
-}
+export type ProductDocument =  Product & Document;
 
 export const ProductSchema: Schema = SchemaFactory.createForClass(Product);
