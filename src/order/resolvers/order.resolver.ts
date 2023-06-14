@@ -48,10 +48,4 @@ export class OrderResolver {
   async orders() {
     return this.orderService.findAll();
   }
-
-  @ResolveField('items', (returns) => [Product])
-  async getItems(@Parent() order: Order) {
-    const itemIds = order.items;
-    return this.productService.findAll();
-  }
 }
