@@ -8,6 +8,7 @@ import { ProductModule } from 'src/product';
 import { OrderModule } from 'src/order';
 import { UserModule } from 'src/user';
 import { AuthModule } from 'src/auth';
+import { InventoryModule } from './inventory/inventory.module';
 import environment from 'src/environment';
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import environment from 'src/environment';
     OrderModule,
     UserModule,
     AuthModule,
+    InventoryModule,
   ],
   controllers: [],
   providers: [],

@@ -53,6 +53,15 @@ enum UserRole {
   anonymous
 }
 
+type InventoryLocation {
+  locationName: String!
+  warehouseAddress: String!
+  quantity: Int!
+  lastUpdated: DateTime!
+  manager: String
+  notes: String
+}
+
 type Query {
   getProducts(filter: ProductFilterInput, page: Int, limit: Int): GetProductsOutput!
   getProductById(id: String!): Product!
