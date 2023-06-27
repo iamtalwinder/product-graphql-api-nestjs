@@ -57,9 +57,19 @@ type InventoryLocation {
   locationName: String!
   warehouseAddress: String!
   quantity: Int!
-  lastUpdated: DateTime!
   manager: String
   notes: String
+}
+
+type Inventory {
+  _id: ID!
+  product: Product!
+  inventoryLocations: [InventoryLocation!]!
+}
+
+type GetInventoryOutput {
+  documents: [Inventory!]!
+  totalCount: Float!
 }
 
 type Query {
@@ -67,6 +77,8 @@ type Query {
   getProductById(id: String!): Product!
   order(id: String!): Order!
   orders: [Order!]!
+  getInventory(filter: InventoryFilterInput, page: Int, limit: Int): GetInventoryOutput!
+  getInventoryById(id: String!): Inventory!
 }
 
 input ProductFilterInput {
@@ -75,6 +87,10 @@ input ProductFilterInput {
   description: String
   price: Float
   category: String
+}
+
+input InventoryFilterInput {
+  product: String!
 }
 
 type Mutation {
@@ -88,6 +104,9 @@ type Mutation {
   login(loginInput: LoginInput!): AuthTokenOutput!
   issueAnonymousToken: AuthTokenOutput!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
+  createInventory(createInventoryInput: CreateInventoryInput!): Inventory!
+  updateInventory(id: String!, updateInventoryInput: UpdateInventoryInput!): Inventory!
+  deleteInventory(id: String!): Boolean!
 }
 
 input CreateProductInput {
@@ -141,4 +160,22 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   role: UserRole!
+}
+
+input CreateInventoryInput {
+  productId: ID!
+  inventoryLocations: [InventoryLocationInput!]!
+}
+
+input InventoryLocationInput {
+  locationName: String!
+  warehouseAddress: String!
+  quantity: Int!
+  manager: String
+  notes: String
+}
+
+input UpdateInventoryInput {
+  productId: ID
+  inventoryLocations: [InventoryLocationInput!]
 }

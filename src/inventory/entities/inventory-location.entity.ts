@@ -16,15 +16,11 @@ export class InventoryLocation {
   @Prop({ required: true })
   quantity: number;
 
-  @Field()
-  @Prop()
-  lastUpdated: Date;
-
   @Field({ nullable: true })
   @Prop()
   manager: string;
 
   @Field({ nullable: true })
-  @Prop()
+  @Prop({ required: false })
   notes?: string;
 }
