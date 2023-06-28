@@ -9,7 +9,7 @@ import { InventoryLocation } from './inventory-location.entity';
 @SchemaDecorator()
 export class Inventory extends Base {
   @Field(() => Product)
-  @Prop({ type: String, ref: Product.name, required: true })
+  @Prop({ type: String, ref: Product.name, required: true, unique: true })
   product: Product | string;
 
   @Field(() => [InventoryLocation])

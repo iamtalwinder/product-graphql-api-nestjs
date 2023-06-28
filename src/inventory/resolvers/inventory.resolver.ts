@@ -1,18 +1,23 @@
-import { Resolver, Query, Args, Mutation, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, Int, Parent, ResolveField } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard, Roles, RolesGuard } from 'src/common';
+import { UserRole } from 'src/user';
+import { Product, ProductService } from 'src/product';
 import { InventoryService } from '../services/inventory.service';
 import { Inventory } from '../entities';
 import { CreateInventoryInput, GetInventoryOutput, InventoryFilterInput, UpdateInventoryInput } from '../dtos';
-import { UserRole } from 'src/user';
 
 @Resolver(() => Inventory)
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class InventoryResolver {
-  constructor(private inventoryService: InventoryService) {}
+  constructor(
+    private productService: ProductService,
+    private inventoryService: InventoryService
+  ) {}
 
 
   @Query(() => GetInventoryOutput)
+  @Roles(UserRole.admin, UserRole.manager)
   async getInventory(
     @Args('filter', { type: () => InventoryFilterInput, nullable: true }) filter: InventoryFilterInput,
     @Args('page', { type: () => Int, nullable: true }) page?: number,
@@ -22,6 +27,7 @@ export class InventoryResolver {
   }
 
   @Query(() => Inventory)
+  @Roles(UserRole.admin, UserRole.manager)
   async getInventoryById(@Args('id') id: string): Promise<Inventory> {
     return this.inventoryService.findOneById(id);
   }
@@ -46,5 +52,10 @@ export class InventoryResolver {
   async deleteInventory(@Args('id') id: string): Promise<boolean> {
     await this.inventoryService.deleteById(id);
     return true
+  }
+
+  @ResolveField(() => Product)
+  async product(@Parent() inventory: Inventory): Promise<Product> {
+    return this.productService.findOneById(inventory.product as string);
   }
 }

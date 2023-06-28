@@ -163,7 +163,7 @@ input CreateUserInput {
 }
 
 input CreateInventoryInput {
-  productId: ID!
+  product: ID!
   inventoryLocations: [InventoryLocationInput!]!
 }
 
@@ -176,6 +176,6 @@ input InventoryLocationInput {
 }
 
 input UpdateInventoryInput {
-  productId: ID
+  product: ID
   inventoryLocations: [InventoryLocationInput!]
 }

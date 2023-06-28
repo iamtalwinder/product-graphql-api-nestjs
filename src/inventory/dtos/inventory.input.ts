@@ -8,11 +8,11 @@ import { InventoryLocation } from '../entities';
 export class InventoryInput {
   @Field(() => ID)
   @IsString()
-  productId: string;
+  product: string;
 
   @Field(() => [InventoryLocationInput])
   @Type(() => InventoryLocation)
-  @IsArray({ each: true })
+  @IsArray()
   @ValidateNested()
   inventoryLocations: InventoryLocationInput[];
 }
