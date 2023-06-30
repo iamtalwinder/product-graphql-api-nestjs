@@ -24,5 +24,31 @@ export class InventoryService extends BaseService<InventoryDocument> {
     }, true);
   }
   
+  public async subtractInventory(order: PlaceOrderInput): Promise<InventoryDocument[]> {
+    const productIds: string[] = PlaceOrderInput.getProductIds(order);
+    const inventories: InventoryDocument[] = await this.find({ product: { $in: productIds }});
 
+    const tasks: Array<Promise<InventoryDocument>> = order.items.map((orderItem: OrderItemInput) => {
+      const inventory: InventoryDocument = inventories.find(
+        (inventory: InventoryDocument) => inventory.product === orderItem.productId,
+      );
+
+      let remainingQuantity = orderItem.quantity;
+
+      if (inventory) {
+        for (let location of inventory.inventoryLocations) {
+          if (remainingQuantity <= 0) break;
+
+          const available = location.quantity;
+          const toSubtract = Math.min(remainingQuantity, available);
+          location.quantity -= toSubtract;
+          remainingQuantity -= toSubtract;
+        }
+      }
+
+      return inventory.save();
+    });
+
+    return Promise.all(tasks);
+  }
 }
