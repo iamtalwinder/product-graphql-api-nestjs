@@ -6,4 +6,11 @@ export const translationKeys = {
     invalidToken: 'auth.invalid-token',
     insufficientPermission: 'auth.insufficient-permission',
   },
+  user: {
+    notFound: 'user.not-found'
+  },
+  product: {
+    notFound: 'product.not-found',
+    outOfStock: 'product.out-of-stock'
+  },
 };
