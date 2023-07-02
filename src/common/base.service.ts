@@ -21,6 +21,10 @@ export abstract class BaseService<T extends Document> {
     return this.model.findById(id).exec();
   }
 
+  public async findAllByIds(ids: string[]): Promise<T[] | null> {
+    return this.model.find({ _id: { $in: ids }}).exec();
+  }
+
   public async findOneAndUpdate(
     id: string,
     update: Partial<T>,
