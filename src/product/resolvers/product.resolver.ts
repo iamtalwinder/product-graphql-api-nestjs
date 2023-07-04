@@ -15,8 +15,8 @@ export class ProductResolver {
   @Query(() => GetProductsOutput)
   async getProducts(
     @Args('filter', { type: () => ProductFilterInput, nullable: true }) filter: ProductFilterInput,
-    @Args('page', { type: () => Int, nullable: true }) page?: number,
-    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+    @Args('page', { type: () => Int, nullable: true, defaultValue: 1 }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true, defaultValue: 20 }) limit?: number,
   ): Promise<GetProductsOutput> {
     return this.productService.findAllWithFilterAndCount(filter, page, limit);
   }
