@@ -1,51 +1,66 @@
 import {
   Resolver,
-  Query,
   Mutation,
   Args,
   ResolveField,
   Parent,
+  Context,
+  Int,
 } from '@nestjs/graphql';
-import { OrderService } from '../services/order.service';
-import { Order } from '../entities/order.entity';
-import { CreateOrderInput } from '../dto/create-order.input';
-import { UpdateOrderStatusInput } from '../dto/update-order-status.input';
-import { Product, ProductService } from '../../product';
+import { UseGuards } from '@nestjs/common';
+import { AuthenticatedRequest, JwtAuthGuard, Roles, RolesGuard } from 'src/common';
+import { Product, ProductService } from 'src/product';
+import { User, UserRole, UserService } from 'src/user';
+import { OrderService } from '../services';
+import { Order, OrderItem } from '../entities';
+import { GetOrdersOutput, PlaceOrderInput } from '../dto';
 
 @Resolver(() => Order)
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class OrderResolver {
   constructor(
     private readonly orderService: OrderService,
     private readonly productService: ProductService,
+    private readonly userService: UserService,
   ) {}
 
   @Mutation(() => Order)
-  async createOrder(
-    @Args('createOrderInput') createOrderInput: CreateOrderInput,
+  @Roles(UserRole.admin, UserRole.manager, UserRole.customer)
+  async placeOrder(
+    @Args('placeOrderInput') placeOrderInput: PlaceOrderInput,
+    @Context() context,
   ) {
-    return this.orderService.create(createOrderInput);
+    const req: AuthenticatedRequest = context.req;
+    return this.orderService.placeOrder(placeOrderInput, req.user);
   }
 
-  @Query(() => Order)
-  async order(@Args('id') id: string) {
-    return this.orderService.findOneById(id);
-  }
-
-  @Mutation(() => Order)
-  async updateOrderStatus(
-    @Args('updateOrderStatusInput')
-    updateOrderStatusInput: UpdateOrderStatusInput,
+  @Mutation(() => GetOrdersOutput)
+  @Roles(UserRole.admin, UserRole.manager, UserRole.customer)
+  async getUserOrders(
+    @Context() context,
+    @Args('page', { type: () => Int, nullable: true, defaultValue: 1 }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true, defaultValue: 20 }) limit?: number,
   ) {
-    return this.orderService.updateStatus(updateOrderStatusInput);
+    const req: AuthenticatedRequest = context.req;
+    return this.orderService.findAllWithFilterAndCount({ user: req.user.id }, page, limit);
   }
 
-  @Mutation(() => Boolean)
-  async deleteOrder(@Args('id') id: string) {
-    return this.orderService.remove(id);
+  @Mutation(() => GetOrdersOutput)
+  @Roles(UserRole.admin, UserRole.manager)
+  async getAllOrders(
+    @Args('page', { type: () => Int, nullable: true, defaultValue: 1 }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true, defaultValue: 20 }) limit?: number,
+  ) {
+    return this.orderService.findAllWithFilterAndCount({ }, page, limit);
   }
 
-  @Query(() => [Order])
-  async orders() {
-    return this.orderService.findAll();
+  @ResolveField('product', () => Product)
+  async getProduct(@Parent() orderItem: OrderItem): Promise<Product> {
+    return this.productService.findOneById(orderItem.product as string);
+  }
+
+  @ResolveField('user', () => User)
+  async getUser(@Parent() order: Order): Promise<User> {
+    return this.userService.findOneById(order.user as string);
   }
 }

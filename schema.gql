@@ -25,20 +25,7 @@ type GetProductsOutput {
   totalCount: Float!
 }
 
-type Order {
-  id: ID!
-  items: [Product!]!
-  orderDate: DateTime!
-  totalPrice: Float!
-  status: String!
-}
-
-type AuthTokenOutput {
-  accessToken: String!
-  refreshToken: String!
-}
-
-type CreateUserOutput {
+type User {
   _id: ID!
   email: String!
   firstName: String!
@@ -51,6 +38,32 @@ enum UserRole {
   admin
   manager
   anonymous
+}
+
+type OrderItem {
+  product: Product!
+  quantity: Int!
+  price: Float!
+}
+
+type Order {
+  _id: ID!
+  user: User!
+  products: [OrderItem!]!
+  shippingAddress: String!
+  status: OrderStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  product: Product!
+}
+
+enum OrderStatus {
+  Pending
+  Confirmed
+  Packed
+  Shipped
+  Delivered
+  Cancelled
 }
 
 type InventoryLocation {
@@ -72,11 +85,27 @@ type GetInventoryOutput {
   totalCount: Float!
 }
 
+type GetOrdersOutput {
+  documents: [Order!]!
+  totalCount: Float!
+}
+
+type AuthTokenOutput {
+  accessToken: String!
+  refreshToken: String!
+}
+
+type CreateUserOutput {
+  _id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: UserRole!
+}
+
 type Query {
-  getProducts(filter: ProductFilterInput, page: Int, limit: Int): GetProductsOutput!
+  getProducts(filter: ProductFilterInput, page: Int = 1, limit: Int = 20): GetProductsOutput!
   getProductById(id: String!): Product!
-  order(id: String!): Order!
-  orders: [Order!]!
   getInventory(filter: InventoryFilterInput, page: Int, limit: Int): GetInventoryOutput!
   getInventoryById(id: String!): Inventory!
 }
@@ -97,16 +126,16 @@ type Mutation {
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(id: String!, updateProductInput: UpdateProductInput!): Product!
   deleteProduct(id: String!): Boolean!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
-  updateOrderStatus(updateOrderStatusInput: UpdateOrderStatusInput!): Order!
-  deleteOrder(id: String!): Boolean!
+  placeOrder(placeOrderInput: PlaceOrderInput!): Order!
+  getUserOrders(page: Int = 1, limit: Int = 20): GetOrdersOutput!
+  getAllOrders(page: Int = 1, limit: Int = 20): GetOrdersOutput!
+  createInventory(createInventoryInput: CreateInventoryInput!): Inventory!
+  updateInventory(id: String!, updateInventoryInput: UpdateInventoryInput!): Inventory!
+  deleteInventory(id: String!): Boolean!
   register(registerInput: RegisterInput!): AuthTokenOutput!
   login(loginInput: LoginInput!): AuthTokenOutput!
   issueAnonymousToken: AuthTokenOutput!
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
-  createInventory(createInventoryInput: CreateInventoryInput!): Inventory!
-  updateInventory(id: String!, updateInventoryInput: UpdateInventoryInput!): Inventory!
-  deleteInventory(id: String!): Boolean!
 }
 
 input CreateProductInput {
@@ -129,17 +158,32 @@ input UpdateProductInput {
   tags: [String!]
 }
 
-input CreateOrderInput {
-  id: ID!
-  itemIds: [String!]!
-  orderDate: DateTime!
-  totalPrice: Float!
-  status: String!
+input PlaceOrderInput {
+  items: [OrderItemInput!]!
+  shippingAddress: String!
 }
 
-input UpdateOrderStatusInput {
-  id: ID!
-  status: String!
+input OrderItemInput {
+  productId: ID!
+  quantity: Int!
+}
+
+input CreateInventoryInput {
+  product: ID!
+  inventoryLocations: [InventoryLocationInput!]!
+}
+
+input InventoryLocationInput {
+  locationName: String!
+  warehouseAddress: String!
+  quantity: Int!
+  manager: String
+  notes: String
+}
+
+input UpdateInventoryInput {
+  product: ID
+  inventoryLocations: [InventoryLocationInput!]
 }
 
 input RegisterInput {
@@ -160,22 +204,4 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   role: UserRole!
-}
-
-input CreateInventoryInput {
-  product: ID!
-  inventoryLocations: [InventoryLocationInput!]!
-}
-
-input InventoryLocationInput {
-  locationName: String!
-  warehouseAddress: String!
-  quantity: Int!
-  manager: String
-  notes: String
-}
-
-input UpdateInventoryInput {
-  product: ID
-  inventoryLocations: [InventoryLocationInput!]
 }
