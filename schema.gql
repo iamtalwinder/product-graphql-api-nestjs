@@ -3,6 +3,7 @@
 # ------------------------------------------------------
 
 type Product {
+  """Unique identifier of the entity."""
   _id: ID!
   name: String!
   sku: String!
@@ -25,11 +26,21 @@ type GetProductsOutput {
   totalCount: Float!
 }
 
+"""User entity representing a registered user."""
 type User {
+  """Unique identifier of the entity."""
   _id: ID!
+
+  """The unique email address of the user."""
   email: String!
+
+  """The first name of the user."""
   firstName: String!
+
+  """The last name of the user."""
   lastName: String!
+
+  """The role of the user in the system."""
   role: UserRole!
 }
 
@@ -47,6 +58,7 @@ type OrderItem {
 }
 
 type Order {
+  """Unique identifier of the entity."""
   _id: ID!
   user: User!
   products: [OrderItem!]!
@@ -75,6 +87,7 @@ type InventoryLocation {
 }
 
 type Inventory {
+  """Unique identifier of the entity."""
   _id: ID!
   product: Product!
   inventoryLocations: [InventoryLocation!]!
@@ -96,9 +109,16 @@ type AuthTokenOutput {
 }
 
 type CreateUserOutput {
+  """Unique identifier of the entity."""
   _id: ID!
+
+  """The unique email address of the user."""
   email: String!
+
+  """The first name of the user."""
   firstName: String!
+
+  """The last name of the user."""
   lastName: String!
   role: UserRole!
 }

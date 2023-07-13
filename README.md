@@ -1,1 +1,1 @@
-# product-graphql-api-code-first-nestjs
+# product-graphql-api-nestjs

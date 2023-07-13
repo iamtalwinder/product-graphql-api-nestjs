@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BaseService } from 'src/common';
+import { OrderItemInput, PlaceOrderInput } from 'src/order';
 import { Inventory, InventoryDocument } from '../entities';
-import { OrderItemInput, PlaceOrderInput } from 'src/order/dto';
 
 @Injectable()
 export class InventoryService extends BaseService<InventoryDocument> {
