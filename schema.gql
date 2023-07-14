@@ -44,10 +44,26 @@ type User {
   role: UserRole!
 }
 
+"""
+Defines the role of a user within the system and their respective permissions.
+"""
 enum UserRole {
+  """A customer who can view and purchase products and view their orders."""
   customer
+
+  """
+  An administrator with full privileges, including managing users and roles.
+  """
   admin
+
+  """
+  A manager with administrative capabilities, except for creating or managing admins or other managers.
+  """
   manager
+
+  """
+  An anonymous user who can only view products but cannot make purchases.
+  """
   anonymous
 }
 
