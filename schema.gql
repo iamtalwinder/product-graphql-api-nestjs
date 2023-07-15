@@ -2,17 +2,38 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+"""
+Represents a product in the system, including details like name, SKU, price, and category.
+"""
 type Product {
   """Unique identifier of the entity."""
   _id: ID!
+
+  """The name of the product."""
   name: String!
+
+  """A unique stock keeping unit identifier for the product."""
   sku: String!
+
+  """An optional description of the product."""
   description: String
+
+  """The price of the product."""
   price: Float!
+
+  """The category of the product. Optional."""
   category: String
+
+  """A list of image URLs for the product. Optional."""
   images: [String]
+
+  """A list of tags associated with the product. Optional."""
   tags: [String]
+
+  """The date and time when the product was created."""
   createdAt: DateTime!
+
+  """The date and time when the product was last updated."""
   updatedAt: DateTime!
 }
 
