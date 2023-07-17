@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import * as jwt from 'jsonwebtoken';
 import { translationKeys } from 'src/common';

@@ -7,10 +7,10 @@ export const translationKeys = {
     insufficientPermission: 'auth.insufficient-permission',
   },
   user: {
-    notFound: 'user.not-found'
+    notFound: 'user.not-found',
   },
   product: {
     notFound: 'product.not-found',
-    outOfStock: 'product.out-of-stock'
+    outOfStock: 'product.out-of-stock',
   },
 };

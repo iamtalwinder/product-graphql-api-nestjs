@@ -2,12 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { translationKeys, EncryptionService } from 'src/common';
 import { User, UserDocument, UserRole, UserService } from 'src/user';
-import {
-  AuthTokenOutput,
-  CreateUserInput,
-  LoginInput,
-  RegisterInput,
-} from '../dtos';
+import { AuthTokenOutput, CreateUserInput, LoginInput, RegisterInput } from '../dtos';
 import { TokenService } from './token.service';
 
 const EMAIL_ALREADY_EXISTS: string = translationKeys.auth.emailAlreadyExists;
@@ -24,8 +19,7 @@ export class AuthService {
     const { email, password, firstName, lastName } = dto;
 
     const hashedPassword = await EncryptionService.hash(password);
-    const userExists: boolean =
-      await this.userService.doesUserWithEmailExist(email);
+    const userExists: boolean = await this.userService.doesUserWithEmailExist(email);
 
     if (userExists) {
       throw new BadRequestException(EMAIL_ALREADY_EXISTS);
@@ -54,10 +48,7 @@ export class AuthService {
       throw new BadRequestException(INVALID_CREDENTIALS);
     }
 
-    const isPasswordValid = await EncryptionService.compare(
-      password,
-      user.password,
-    );
+    const isPasswordValid = await EncryptionService.compare(password, user.password);
     if (!isPasswordValid) {
       throw new BadRequestException(INVALID_CREDENTIALS);
     }
@@ -77,9 +68,7 @@ export class AuthService {
   }
 
   public async createUser(dto: CreateUserInput): Promise<User> {
-    const userExists: boolean = await this.userService.doesUserWithEmailExist(
-      dto.email,
-    );
+    const userExists: boolean = await this.userService.doesUserWithEmailExist(dto.email);
 
     if (userExists) {
       throw new BadRequestException(EMAIL_ALREADY_EXISTS);

@@ -42,11 +42,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type GetProductsOutput {
-  documents: [Product!]!
-  totalCount: Float!
-}
-
 """User entity representing a registered user."""
 type User {
   """Unique identifier of the entity."""
@@ -86,6 +81,11 @@ enum UserRole {
   An anonymous user who can only view products but cannot make purchases.
   """
   anonymous
+}
+
+type GetProductsOutput {
+  documents: [Product!]!
+  totalCount: Float!
 }
 
 type OrderItem {
@@ -161,8 +161,23 @@ type CreateUserOutput {
 }
 
 type Query {
-  getProducts(filter: ProductFilterInput, page: Int = 1, limit: Int = 20): GetProductsOutput!
-  getProductById(id: String!): Product!
+  """Retrieve a list of products with optional filters."""
+  getProducts(
+    """Filter options for products."""
+    filter: ProductFilterInput
+
+    """Page number for pagination."""
+    page: Int = 1
+
+    """Number of products per page."""
+    limit: Int = 20
+  ): GetProductsOutput!
+
+  """Retrieve a single product by its unique identifier."""
+  getProductById(
+    """The unique identifier of the product."""
+    id: String!
+  ): Product!
   getInventory(filter: InventoryFilterInput, page: Int, limit: Int): GetInventoryOutput!
   getInventoryById(id: String!): Inventory!
 }
@@ -180,9 +195,26 @@ input InventoryFilterInput {
 }
 
 type Mutation {
-  createProduct(createProductInput: CreateProductInput!): Product!
-  updateProduct(id: String!, updateProductInput: UpdateProductInput!): Product!
-  deleteProduct(id: String!): Boolean!
+  """Create a new product."""
+  createProduct(
+    """The data used to create a new product."""
+    createProductInput: CreateProductInput!
+  ): Product!
+
+  """Update an existing product."""
+  updateProduct(
+    """The unique identifier of the product to be updated."""
+    id: String!
+
+    """The new details to update the product with."""
+    updateProductInput: UpdateProductInput!
+  ): Product!
+
+  """Delete a product."""
+  deleteProduct(
+    """The unique identifier of the product to be deleted."""
+    id: String!
+  ): Boolean!
   placeOrder(placeOrderInput: PlaceOrderInput!): Order!
   getUserOrders(page: Int = 1, limit: Int = 20): GetOrdersOutput!
   getAllOrders(page: Int = 1, limit: Int = 20): GetOrdersOutput!

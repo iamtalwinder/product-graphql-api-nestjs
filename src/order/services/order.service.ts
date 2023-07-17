@@ -43,12 +43,16 @@ export class OrderService extends BaseService<OrderDocument> {
       throw new BadRequestException(OUT_OF_STOCK);
     }
 
-    const order: Partial<Order>= this.prepareOrder(placeOrderInput, products, user);
+    const order: Partial<Order> = this.prepareOrder(placeOrderInput, products, user);
     await this.inventoryService.subtractInventory(placeOrderInput);
     return this.create(order);
   }
 
-  private prepareOrder(placeOrderInput: PlaceOrderInput, products: ProductDocument[], user: UserDocument): Partial<Order> {
+  private prepareOrder(
+    placeOrderInput: PlaceOrderInput,
+    products: ProductDocument[],
+    user: UserDocument,
+  ): Partial<Order> {
     const orderItems: OrderItem[] = placeOrderInput.items.map((orderItem: OrderItemInput) => {
       const product = products.find((product: ProductDocument) => product._id === orderItem.productId);
 
@@ -56,7 +60,7 @@ export class OrderService extends BaseService<OrderDocument> {
         product: product._id,
         quantity: orderItem.quantity,
         price: product.price,
-      }
+      };
     });
 
     return {
@@ -64,6 +68,6 @@ export class OrderService extends BaseService<OrderDocument> {
       shippingAddress: placeOrderInput.shippingAddress,
       status: OrderStatus.Pending,
       user: user._id,
-    }
+    };
   }
 }

@@ -22,20 +22,21 @@ export abstract class BaseService<T extends Document> {
   }
 
   public async findAllByIds(ids: string[]): Promise<T[] | null> {
-    return this.model.find({ _id: { $in: ids }}).exec();
+    return this.model.find({ _id: { $in: ids } }).exec();
   }
 
-  public async findOneAndUpdate(
-    id: string,
-    update: Partial<T>,
-  ): Promise<T | null> {
+  public async findOneAndUpdate(id: string, update: Partial<T>): Promise<T | null> {
     return this.model.findByIdAndUpdate(id, update, { new: true }).exec();
   }
 
-  async findAllWithFilterAndCount(filter = {}, page?: number, limit?: number): Promise<{ documents: T[]; totalCount: number }> {
+  async findAllWithFilterAndCount(
+    filter = {},
+    page?: number,
+    limit?: number,
+  ): Promise<{ documents: T[]; totalCount: number }> {
     const query = this.model.find();
 
-    Object.keys(filter).forEach(key => {
+    Object.keys(filter).forEach((key) => {
       if (filter[key] !== undefined) {
         query.where(key).equals(filter[key]);
       }
@@ -48,7 +49,7 @@ export abstract class BaseService<T extends Document> {
     }
 
     const documents = await query.exec();
-    console.log(documents)
+    console.log(documents);
     return { documents, totalCount };
   }
 
@@ -56,10 +57,7 @@ export abstract class BaseService<T extends Document> {
     return this.model.create(dto);
   }
 
-  public async update(
-    filter = {},
-    update: Partial<T>,
-  ): Promise<UpdateWriteOpResult> {
+  public async update(filter = {}, update: Partial<T>): Promise<UpdateWriteOpResult> {
     return this.model.updateMany(filter, update, { new: true }).exec();
   }
 

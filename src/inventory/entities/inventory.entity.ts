@@ -19,7 +19,7 @@ export class Inventory extends Base {
   getTotalQuantity: Function;
 }
 
-export type InventoryDocument =  Inventory & Document;
+export type InventoryDocument = Inventory & Document;
 
 export const InventorySchema: Schema = SchemaFactory.createForClass(Inventory);
 

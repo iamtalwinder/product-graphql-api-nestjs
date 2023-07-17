@@ -10,9 +10,7 @@ const jwtOptions: JwtOptionsInterface = environment.jwtOptions;
 export class TokenService {
   constructor(private jwtService: JwtService) {}
 
-  async issueToken(
-    payload: TokenPayload,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async issueToken(payload: TokenPayload): Promise<{ accessToken: string; refreshToken: string }> {
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: jwtOptions.accessTokenExp,
     });

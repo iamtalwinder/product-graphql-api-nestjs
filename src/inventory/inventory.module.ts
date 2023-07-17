@@ -6,11 +6,8 @@ import { InventoryResolver } from './resolvers';
 import { ProductModule } from 'src/product';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Inventory.name, schema: InventorySchema }]),
-    ProductModule,
-  ],
+  imports: [MongooseModule.forFeature([{ name: Inventory.name, schema: InventorySchema }]), ProductModule],
   exports: [InventoryService],
-  providers: [InventoryService, InventoryResolver]
+  providers: [InventoryService, InventoryResolver],
 })
 export class InventoryModule {}

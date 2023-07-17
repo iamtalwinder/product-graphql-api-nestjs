@@ -10,7 +10,7 @@ import { OrderItem } from './order-item';
 @SchemaDecorator()
 export class Order extends Base {
   @Field(() => User)
-  @Prop({ type: String, ref: User.name, required: true  })
+  @Prop({ type: String, ref: User.name, required: true })
   user: User | string;
 
   @Field(() => [OrderItem])
@@ -18,7 +18,7 @@ export class Order extends Base {
   products: OrderItem[];
 
   @Field(() => String)
-  @Prop({required: true})
+  @Prop({ required: true })
   shippingAddress: string;
 
   @Field(() => OrderStatus)
@@ -32,6 +32,6 @@ export class Order extends Base {
   updatedAt: Date;
 }
 
-export type OrderDocument =  Order & Document;
+export type OrderDocument = Order & Document;
 
 export const OrderSchema: Schema = SchemaFactory.createForClass(Order);

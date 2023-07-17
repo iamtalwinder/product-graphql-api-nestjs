@@ -3,7 +3,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, SchemaFactory, Schema as SchemaDecorator } from '@nestjs/mongoose';
 import { Base } from 'src/common';
 
-@ObjectType({ 
+@ObjectType({
   description: 'Represents a product in the system, including details like name, SKU, price, and category.',
 })
 @SchemaDecorator()
@@ -32,7 +32,10 @@ export class Product extends Base {
   @Prop([String])
   images?: string[];
 
-  @Field(() => [String], { nullable: 'itemsAndList', description: 'A list of tags associated with the product. Optional.' })
+  @Field(() => [String], {
+    nullable: 'itemsAndList',
+    description: 'A list of tags associated with the product. Optional.',
+  })
   @Prop([String])
   tags?: string[];
 

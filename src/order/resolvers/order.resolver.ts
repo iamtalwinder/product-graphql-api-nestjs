@@ -1,12 +1,4 @@
-import {
-  Resolver,
-  Mutation,
-  Args,
-  ResolveField,
-  Parent,
-  Context,
-  Int,
-} from '@nestjs/graphql';
+import { Resolver, Mutation, Args, ResolveField, Parent, Context, Int } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { AuthenticatedRequest, JwtAuthGuard, Roles, RolesGuard } from 'src/common';
 import { Product, ProductService } from 'src/product';
@@ -26,10 +18,7 @@ export class OrderResolver {
 
   @Mutation(() => Order)
   @Roles(UserRole.admin, UserRole.manager, UserRole.customer)
-  async placeOrder(
-    @Args('placeOrderInput') placeOrderInput: PlaceOrderInput,
-    @Context() context,
-  ) {
+  async placeOrder(@Args('placeOrderInput') placeOrderInput: PlaceOrderInput, @Context() context) {
     const req: AuthenticatedRequest = context.req;
     return this.orderService.placeOrder(placeOrderInput, req.user);
   }
@@ -51,7 +40,7 @@ export class OrderResolver {
     @Args('page', { type: () => Int, nullable: true, defaultValue: 1 }) page?: number,
     @Args('limit', { type: () => Int, nullable: true, defaultValue: 20 }) limit?: number,
   ) {
-    return this.orderService.findAllWithFilterAndCount({ }, page, limit);
+    return this.orderService.findAllWithFilterAndCount({}, page, limit);
   }
 
   @ResolveField('product', () => Product)

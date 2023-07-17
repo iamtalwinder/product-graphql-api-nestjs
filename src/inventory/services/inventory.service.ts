@@ -13,20 +13,20 @@ export class InventoryService extends BaseService<InventoryDocument> {
 
   public async isStockAvailable(order: PlaceOrderInput): Promise<boolean> {
     const productIds: string[] = PlaceOrderInput.getProductIds(order);
-    const inventories: InventoryDocument[] = await this.find({ product: { $in: productIds }});
-    
+    const inventories: InventoryDocument[] = await this.find({ product: { $in: productIds } });
+
     return order.items.reduce((isStockAvailable: boolean, item: OrderItemInput) => {
       const inventory: InventoryDocument = inventories.find(
         (inventory: InventoryDocument) => inventory.product === item.productId,
       );
-        
+
       return isStockAvailable && inventory.getTotalQuantity() >= item.quantity;
     }, true);
   }
-  
+
   public async subtractInventory(order: PlaceOrderInput): Promise<InventoryDocument[]> {
     const productIds: string[] = PlaceOrderInput.getProductIds(order);
-    const inventories: InventoryDocument[] = await this.find({ product: { $in: productIds }});
+    const inventories: InventoryDocument[] = await this.find({ product: { $in: productIds } });
 
     const tasks: Array<Promise<InventoryDocument>> = order.items.map((orderItem: OrderItemInput) => {
       const inventory: InventoryDocument = inventories.find(

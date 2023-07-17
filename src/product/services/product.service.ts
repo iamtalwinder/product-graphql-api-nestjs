@@ -9,5 +9,4 @@ export class ProductService extends BaseService<ProductDocument> {
   constructor(@InjectModel(Product.name) productModel: Model<ProductDocument>) {
     super(productModel);
   }
-  
 }

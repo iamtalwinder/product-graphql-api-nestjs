@@ -12,9 +12,8 @@ import { CreateInventoryInput, GetInventoryOutput, InventoryFilterInput, UpdateI
 export class InventoryResolver {
   constructor(
     private productService: ProductService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
   ) {}
-
 
   @Query(() => GetInventoryOutput)
   @Roles(UserRole.admin, UserRole.manager)
@@ -51,7 +50,7 @@ export class InventoryResolver {
   @Roles(UserRole.admin, UserRole.manager)
   async deleteInventory(@Args('id') id: string): Promise<boolean> {
     await this.inventoryService.deleteById(id);
-    return true
+    return true;
   }
 
   @ResolveField(() => Product)
