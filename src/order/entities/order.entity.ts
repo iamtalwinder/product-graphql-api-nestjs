@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Prop, Schema as SchemaDecorator, SchemaFactory } from '@nestjs/mongoose';
 import { Schema, Document } from 'mongoose';
 import { Base } from 'src/common';

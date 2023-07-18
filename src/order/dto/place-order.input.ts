@@ -1,4 +1,4 @@
-import { InputType, Field, ID } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import { IsArray, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OrderItemInput } from './order-items.input';

@@ -36,7 +36,7 @@ export class InventoryService extends BaseService<InventoryDocument> {
       let remainingQuantity = orderItem.quantity;
 
       if (inventory) {
-        for (let location of inventory.inventoryLocations) {
+        for (const location of inventory.inventoryLocations) {
           if (remainingQuantity <= 0) break;
 
           const available = location.quantity;
