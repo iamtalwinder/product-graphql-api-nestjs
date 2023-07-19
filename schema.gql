@@ -83,35 +83,80 @@ enum UserRole {
   anonymous
 }
 
+"""
+Output type for getting a list of products. Includes the products and the total count.
+"""
 type GetProductsOutput {
+  """The list of retrieved products."""
   documents: [Product!]!
+
+  """
+  The total count of products available, considering the applied filters.
+  """
   totalCount: Float!
 }
 
+"""
+Represents an item in an order, including the product, quantity, and price.
+"""
 type OrderItem {
+  """The product included in the order item."""
   product: Product!
+
+  """The quantity of the product ordered."""
   quantity: Int!
+
+  """The price of the product at the time of the order."""
   price: Float!
 }
 
+"""
+Represents an order placed by a user, including details like products, shipping address, and status.
+"""
 type Order {
   """Unique identifier of the entity."""
   _id: ID!
+
+  """Resolve the user details for an order."""
   user: User!
+
+  """The list of items included in the order."""
   products: [OrderItem!]!
+
+  """The shipping address for the order."""
   shippingAddress: String!
+
+  """The current status of the order."""
   status: OrderStatus!
+
+  """The date and time when the order was created."""
   createdAt: DateTime!
+
+  """The date and time when the order was last updated."""
   updatedAt: DateTime!
+
+  """Resolve the product details for an order item."""
   product: Product!
 }
 
+"""The status of an order through its lifecycle."""
 enum OrderStatus {
+  """Order has been placed but not yet processed."""
   Pending
+
+  """Order has been confirmed."""
   Confirmed
+
+  """Order has been packed and is ready for shipping."""
   Packed
+
+  """Order has been shipped and is in transit."""
   Shipped
+
+  """Order has been delivered to the recipient."""
   Delivered
+
+  """Order has been cancelled."""
   Cancelled
 }
 
@@ -135,8 +180,14 @@ type GetInventoryOutput {
   totalCount: Float!
 }
 
+"""
+Output type for retrieving orders. Includes a list of orders and the total count.
+"""
 type GetOrdersOutput {
+  """The list of retrieved orders."""
   documents: [Order!]!
+
+  """The total count of orders available, considering the applied filters."""
   totalCount: Float!
 }
 
@@ -182,11 +233,23 @@ type Query {
   getInventoryById(id: String!): Inventory!
 }
 
+"""
+Input type for filtering products. Allows partial specification of product fields, excluding images and tags.
+"""
 input ProductFilterInput {
+  """The name of the product."""
   name: String
+
+  """A unique stock keeping unit identifier for the product."""
   sku: String
+
+  """An optional description of the product."""
   description: String
+
+  """The price of the product."""
   price: Float
+
+  """The category of the product. Optional."""
   category: String
 }
 
@@ -215,9 +278,30 @@ type Mutation {
     """The unique identifier of the product to be deleted."""
     id: String!
   ): Boolean!
-  placeOrder(placeOrderInput: PlaceOrderInput!): Order!
-  getUserOrders(page: Int = 1, limit: Int = 20): GetOrdersOutput!
-  getAllOrders(page: Int = 1, limit: Int = 20): GetOrdersOutput!
+
+  """Place a new order with the given details."""
+  placeOrder(
+    """Input data for placing a new order."""
+    placeOrderInput: PlaceOrderInput!
+  ): Order!
+
+  """Get orders placed by the currently authenticated user."""
+  getUserOrders(
+    """Page number for pagination."""
+    page: Int = 1
+
+    """Number of orders per page."""
+    limit: Int = 20
+  ): GetOrdersOutput!
+
+  """Get all orders in the system. Restricted to admins and managers."""
+  getAllOrders(
+    """Page number for pagination."""
+    page: Int = 1
+
+    """Number of orders per page."""
+    limit: Int = 20
+  ): GetOrdersOutput!
   createInventory(createInventoryInput: CreateInventoryInput!): Inventory!
   updateInventory(id: String!, updateInventoryInput: UpdateInventoryInput!): Inventory!
   deleteInventory(id: String!): Boolean!
@@ -227,33 +311,73 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): CreateUserOutput!
 }
 
+"""Input type for creating a new product."""
 input CreateProductInput {
+  """The name of the product."""
   name: String!
+
+  """A unique stock keeping unit identifier for the product."""
   sku: String!
+
+  """An optional description of the product."""
   description: String
+
+  """The price of the product."""
   price: Float!
+
+  """The category of the product. Optional."""
   category: String
+
+  """A list of image URLs for the product. Optional."""
   images: [String]
+
+  """A list of tags associated with the product. Optional."""
   tags: [String]
 }
 
+"""Input type for partially updating product details."""
 input UpdateProductInput {
+  """The name of the product."""
   name: String
+
+  """A unique stock keeping unit identifier for the product."""
   sku: String
+
+  """An optional description of the product."""
   description: String
+
+  """The price of the product."""
   price: Float
+
+  """The category of the product. Optional."""
   category: String
+
+  """A list of image URLs for the product. Optional."""
   images: [String!]
+
+  """A list of tags associated with the product. Optional."""
   tags: [String!]
 }
 
+"""
+Input type for placing an order, including items to order and the shipping address.
+"""
 input PlaceOrderInput {
+  """A list of items to be included in the order."""
   items: [OrderItemInput!]!
+
+  """The shipping address for the order."""
   shippingAddress: String!
 }
 
+"""
+Input type for specifying an item in an order, including the product ID and quantity.
+"""
 input OrderItemInput {
+  """The unique identifier of the product."""
   productId: ID!
+
+  """The quantity of the product to order."""
   quantity: Int!
 }
 
