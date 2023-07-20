@@ -160,23 +160,50 @@ enum OrderStatus {
   Cancelled
 }
 
+"""
+Represents a location within an inventory, including details like location name, warehouse address, and quantity of items.
+"""
 type InventoryLocation {
+  """The name of the inventory location."""
   locationName: String!
+
+  """The address of the warehouse associated with this location."""
   warehouseAddress: String!
+
+  """The quantity of the specific item available at this location."""
   quantity: Int!
+
+  """The manager responsible for this inventory location. Optional."""
   manager: String
+
+  """Additional notes about the inventory location. Optional."""
   notes: String
 }
 
+"""
+Represents the inventory of a product, including all locations where the product is stored.
+"""
 type Inventory {
   """Unique identifier of the entity."""
   _id: ID!
+
+  """The product associated with this inventory."""
   product: Product!
+
+  """A list of locations where the product is stored."""
   inventoryLocations: [InventoryLocation!]!
 }
 
+"""
+Output type for retrieving a list of inventory records, including documents and total count.
+"""
 type GetInventoryOutput {
+  """The list of retrieved inventory records."""
   documents: [Inventory!]!
+
+  """
+  The total count of inventory records available, considering the applied filters.
+  """
   totalCount: Float!
 }
 
@@ -229,8 +256,24 @@ type Query {
     """The unique identifier of the product."""
     id: String!
   ): Product!
-  getInventory(filter: InventoryFilterInput, page: Int, limit: Int): GetInventoryOutput!
-  getInventoryById(id: String!): Inventory!
+
+  """Retrieve a list of inventory items with optional filters."""
+  getInventory(
+    """Filter options for inventory items."""
+    filter: InventoryFilterInput
+
+    """Page number for pagination."""
+    page: Int
+
+    """Number of inventory items per page."""
+    limit: Int
+  ): GetInventoryOutput!
+
+  """Retrieve a single inventory item by its ID."""
+  getInventoryById(
+    """The unique identifier of the inventory item."""
+    id: String!
+  ): Inventory!
 }
 
 """
@@ -253,7 +296,9 @@ input ProductFilterInput {
   category: String
 }
 
+"""Input type for filtering inventory records by product ID."""
 input InventoryFilterInput {
+  """The unique identifier of the product to filter inventory records."""
   product: String!
 }
 
@@ -302,9 +347,27 @@ type Mutation {
     """Number of orders per page."""
     limit: Int = 20
   ): GetOrdersOutput!
-  createInventory(createInventoryInput: CreateInventoryInput!): Inventory!
-  updateInventory(id: String!, updateInventoryInput: UpdateInventoryInput!): Inventory!
-  deleteInventory(id: String!): Boolean!
+
+  """Create a new inventory item with the specified details."""
+  createInventory(
+    """Input data for creating a new inventory item."""
+    createInventoryInput: CreateInventoryInput!
+  ): Inventory!
+
+  """Update an existing inventory item identified by its ID."""
+  updateInventory(
+    """The unique identifier of the inventory item to be updated."""
+    id: String!
+
+    """The new details to update the inventory item with."""
+    updateInventoryInput: UpdateInventoryInput!
+  ): Inventory!
+
+  """Delete an inventory item identified by its ID."""
+  deleteInventory(
+    """The unique identifier of the inventory item to be deleted."""
+    id: String!
+  ): Boolean!
   register(registerInput: RegisterInput!): AuthTokenOutput!
   login(loginInput: LoginInput!): AuthTokenOutput!
   issueAnonymousToken: AuthTokenOutput!
@@ -381,21 +444,41 @@ input OrderItemInput {
   quantity: Int!
 }
 
+"""Input type for creating a new inventory record."""
 input CreateInventoryInput {
+  """The unique identifier of the product."""
   product: ID!
+
+  """List of inventory locations for the product."""
   inventoryLocations: [InventoryLocationInput!]!
 }
 
+"""
+Input type for specifying a location in the inventory, including details like location name, address, and quantity.
+"""
 input InventoryLocationInput {
+  """The name of the inventory location."""
   locationName: String!
+
+  """The address of the warehouse associated with this location."""
   warehouseAddress: String!
+
+  """The quantity of the specific item available at this location."""
   quantity: Int!
+
+  """The manager responsible for this inventory location. Optional."""
   manager: String
+
+  """Additional notes about the inventory location. Optional."""
   notes: String
 }
 
+"""Input type for partially updating inventory details."""
 input UpdateInventoryInput {
+  """The unique identifier of the product."""
   product: ID
+
+  """List of inventory locations for the product."""
   inventoryLocations: [InventoryLocationInput!]
 }
 

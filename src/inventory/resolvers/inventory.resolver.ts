@@ -15,45 +15,59 @@ export class InventoryResolver {
     private inventoryService: InventoryService,
   ) {}
 
-  @Query(() => GetInventoryOutput)
+  @Query(() => GetInventoryOutput, { description: 'Retrieve a list of inventory items with optional filters.' })
   @Roles(UserRole.admin, UserRole.manager)
   async getInventory(
-    @Args('filter', { type: () => InventoryFilterInput, nullable: true }) filter: InventoryFilterInput,
-    @Args('page', { type: () => Int, nullable: true }) page?: number,
-    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+    @Args('filter', {
+      type: () => InventoryFilterInput,
+      nullable: true,
+      description: 'Filter options for inventory items.',
+    })
+    filter: InventoryFilterInput,
+    @Args('page', { type: () => Int, nullable: true, description: 'Page number for pagination.' }) page?: number,
+    @Args('limit', { type: () => Int, nullable: true, description: 'Number of inventory items per page.' })
+    limit?: number,
   ): Promise<GetInventoryOutput> {
     return this.inventoryService.findAllWithFilterAndCount(filter, page, limit);
   }
 
-  @Query(() => Inventory)
+  @Query(() => Inventory, { description: 'Retrieve a single inventory item by its ID.' })
   @Roles(UserRole.admin, UserRole.manager)
-  async getInventoryById(@Args('id') id: string): Promise<Inventory> {
+  async getInventoryById(
+    @Args('id', { description: 'The unique identifier of the inventory item.' }) id: string,
+  ): Promise<Inventory> {
     return this.inventoryService.findOneById(id);
   }
 
-  @Mutation(() => Inventory)
+  @Mutation(() => Inventory, { description: 'Create a new inventory item with the specified details.' })
   @Roles(UserRole.admin, UserRole.manager)
-  async createInventory(@Args('createInventoryInput') createInventoryInput: CreateInventoryInput): Promise<Inventory> {
+  async createInventory(
+    @Args('createInventoryInput', { description: 'Input data for creating a new inventory item.' })
+    createInventoryInput: CreateInventoryInput,
+  ): Promise<Inventory> {
     return this.inventoryService.create(createInventoryInput);
   }
 
-  @Mutation(() => Inventory)
+  @Mutation(() => Inventory, { description: 'Update an existing inventory item identified by its ID.' })
   @Roles(UserRole.admin, UserRole.manager)
   async updateInventory(
-    @Args('id') id: string,
-    @Args('updateInventoryInput') updateInventoryInput: UpdateInventoryInput,
+    @Args('id', { description: 'The unique identifier of the inventory item to be updated.' }) id: string,
+    @Args('updateInventoryInput', { description: 'The new details to update the inventory item with.' })
+    updateInventoryInput: UpdateInventoryInput,
   ): Promise<Inventory> {
     return this.inventoryService.findOneAndUpdate(id, updateInventoryInput);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, { description: 'Delete an inventory item identified by its ID.' })
   @Roles(UserRole.admin, UserRole.manager)
-  async deleteInventory(@Args('id') id: string): Promise<boolean> {
+  async deleteInventory(
+    @Args('id', { description: 'The unique identifier of the inventory item to be deleted.' }) id: string,
+  ): Promise<boolean> {
     await this.inventoryService.deleteById(id);
     return true;
   }
 
-  @ResolveField(() => Product)
+  @ResolveField(() => Product, { description: 'Resolve the product details associated with the inventory item.' })
   async product(@Parent() inventory: Inventory): Promise<Product> {
     return this.productService.findOneById(inventory.product as string);
   }

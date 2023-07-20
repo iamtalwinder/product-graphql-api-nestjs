@@ -5,14 +5,16 @@ import { Base } from 'src/common';
 import { Product } from 'src/product';
 import { InventoryLocation } from './inventory-location.entity';
 
-@ObjectType()
+@ObjectType({
+  description: 'Represents the inventory of a product, including all locations where the product is stored.',
+})
 @SchemaDecorator()
 export class Inventory extends Base {
-  @Field(() => Product)
+  @Field(() => Product, { description: 'The product associated with this inventory.' })
   @Prop({ type: String, ref: Product.name, required: true, unique: true })
   product: Product | string;
 
-  @Field(() => [InventoryLocation])
+  @Field(() => [InventoryLocation], { description: 'A list of locations where the product is stored.' })
   @Prop({ type: [InventoryLocation], default: [] })
   inventoryLocations: InventoryLocation[];
 
