@@ -218,11 +218,20 @@ type GetOrdersOutput {
   totalCount: Float!
 }
 
+"""
+Output type for authentication tokens, including access and refresh tokens.
+"""
 type AuthTokenOutput {
+  """JWT access token for authentication."""
   accessToken: String!
+
+  """JWT refresh token for generating new access tokens."""
   refreshToken: String!
 }
 
+"""
+Output type for creating a new user, omitting sensitive information like password.
+"""
 type CreateUserOutput {
   """Unique identifier of the entity."""
   _id: ID!
@@ -235,6 +244,8 @@ type CreateUserOutput {
 
   """The last name of the user."""
   lastName: String!
+
+  """The role assigned to the created user."""
   role: UserRole!
 }
 
@@ -368,10 +379,27 @@ type Mutation {
     """The unique identifier of the inventory item to be deleted."""
     id: String!
   ): Boolean!
-  register(registerInput: RegisterInput!): AuthTokenOutput!
-  login(loginInput: LoginInput!): AuthTokenOutput!
+
+  """Register a new user and return authentication tokens."""
+  register(
+    """Input data for user registration."""
+    registerInput: RegisterInput!
+  ): AuthTokenOutput!
+
+  """Authenticate a user and return authentication tokens."""
+  login(
+    """Input data for user login."""
+    loginInput: LoginInput!
+  ): AuthTokenOutput!
+
+  """Issue an anonymous authentication token for non-registered users."""
   issueAnonymousToken: AuthTokenOutput!
-  createUser(createUserInput: CreateUserInput!): CreateUserOutput!
+
+  """Create a new user. Restricted to admin users."""
+  createUser(
+    """Input data for creating a new user."""
+    createUserInput: CreateUserInput!
+  ): CreateUserOutput!
 }
 
 """Input type for creating a new product."""
@@ -482,22 +510,48 @@ input UpdateInventoryInput {
   inventoryLocations: [InventoryLocationInput!]
 }
 
+"""
+Input type for user registration, including email, password, first name, and last name.
+"""
 input RegisterInput {
+  """The user's email address."""
   email: String!
+
+  """The user's password."""
   password: String!
+
+  """The user's first name."""
   firstName: String!
+
+  """The user's last name."""
   lastName: String!
 }
 
+"""Input type for user login, requiring email and password."""
 input LoginInput {
+  """The user's email address."""
   email: String!
+
+  """The user's password."""
   password: String!
 }
 
+"""
+Input type for creating a new user, extending the register input with user roles.
+"""
 input CreateUserInput {
+  """The user's email address."""
   email: String!
+
+  """The user's password."""
   password: String!
+
+  """The user's first name."""
   firstName: String!
+
+  """The user's last name."""
   lastName: String!
+
+  """The role assigned to the new user."""
   role: UserRole!
 }
