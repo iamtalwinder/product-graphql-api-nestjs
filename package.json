@@ -1,8 +1,8 @@
 {
   "name": "product-graphql-api-nestjs",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "description": "NestJS/MongoDB GraphQL API for e-commerce and inventory management, featuring user roles, product handling, and real-time inventory updates.",
+  "author": "Talwinder Singh",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
