@@ -2,7 +2,7 @@
 
 ## About
 
-This project, "Product GraphQL API," is a NestJS/MongoDB GraphQL API focused on e-commerce and inventory management. It's designed to handle various user roles, manage products effectively, and provide real-time updates on inventory. Developed by Talwinder Singh, the API aims to offer a robust backend solution for modern web applications.
+This project, "Product GraphQL API," is a NestJS/MongoDB GraphQL API focused on e-commerce and inventory management. It's designed to handle various user roles, manage products effectively, and provide real-time updates on inventory.
 
 ## Features
 
@@ -52,7 +52,7 @@ This project, "Product GraphQL API," is a NestJS/MongoDB GraphQL API focused on 
 
 ### Usage
 
-Access the GraphQL playground at `localhost:3000/product` to interact with the API. The playground page includes comprehensive documentation for all available queries and mutations.
+Access the GraphQL playground at `http://localhost:3000/product` to interact with the API. The playground page includes comprehensive documentation for all available queries and mutations.
 
 ## Scripts
 
@@ -62,6 +62,55 @@ Access the GraphQL playground at `localhost:3000/product` to interact with the A
 - `start:dev`: Start the server in development mode with hot reload.
 - `start:debug`: Start the server in debug mode.
 - `lint`: Lint the codebase.
+
+Sure, here's a "Run with Docker" section that you can add to your README file:
+
+---
+
+## Run with Docker
+
+Easily set up and run the application using Docker.
+
+### Prerequisites
+
+- Docker installed on your machine.
+
+### Steps
+
+1. **Clone the Repository**
+   
+   If you haven't already, clone the project repository:
+   ```bash
+   git clone https://github.com/iamtalwinder/product-graphql-api-nestjs.git
+   ```
+
+2. **Navigate to Project Directory**
+
+   Change to the project directory:
+   ```bash
+   cd product-graphql-api-nestjs
+   ```
+
+3. **Build and Run with Docker Compose**
+
+   Use Docker Compose to build and run the application and MongoDB services:
+   ```bash
+   docker-compose up --build
+   ```
+   This command builds the Docker image and starts the containers. The `--build` flag ensures that the Docker image is rebuilt with the latest changes.
+
+4. **Access the Application**
+
+   The application will be accessible at `http://localhost:3000/product`.
+
+5. **Stopping the Containers**
+
+   To stop the application, use the following command in the terminal:
+   ```bash
+   docker-compose down
+   ```
+   This command stops and removes the containers and network created by `docker-compose`.
+
 
 ## Contributing
 

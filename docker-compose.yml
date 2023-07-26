@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: product-graphql-api
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - APP_PORT=3000
+      - MONGODB_URL=mongodb://mongo:27017/product
+      - JWT_SECRET=secret
+      - JWT_ACCESS_TOKEN_EXPIRATION=1h
+      - JWT_REFRESH_TOKEN_EXPIRATION=1h
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mern-task
+      - MONGO_INITDB_ROOT_PASSWORD=MlF3Sr1rgdc4p77S
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
