@@ -1,8 +1,7 @@
 Feature: Register
 
   Background: 
-    Given I store the key "customerEmail" with the value "customer@gmail.com"
-    Given I store the key "password" with the value "{{password}}"
+    Given I load key-value pairs from the JSON file "constants.json"
 
   Scenario: Successfully register a new user
     Given I send a GraphQL request to "/product" with the payload:

@@ -4,7 +4,7 @@ import { BaseFixture } from '@nestjs-cucumber-kit/core';
 import { User, UserDocument, UserRole } from 'src/user';
 import { EncryptionService } from 'src/common';
 
-export default class ItemFixture extends BaseFixture {
+export default class UserFixture extends BaseFixture {
   async apply(): Promise<void> {
     const userModel: Model<UserDocument> = this.app.get(getModelToken(User.name));
 
@@ -16,7 +16,7 @@ export default class ItemFixture extends BaseFixture {
         email: 'anonymous@gmail.com',
         firstName: 'anonymous',
         lastName: 'anonymous',
-        password: 'test',
+        password: hashedPassword,
         role: UserRole.anonymous,
       },
       { 
@@ -24,7 +24,7 @@ export default class ItemFixture extends BaseFixture {
         email: 'customer@gmail.com',
         firstName: 'customer',
         lastName: 'customer',
-        password: 'test',
+        password: hashedPassword,
         role: UserRole.customer,
       },
       { 
@@ -32,7 +32,7 @@ export default class ItemFixture extends BaseFixture {
         email: 'admin@gmail.com',
         firstName: 'admin',
         lastName: 'admin',
-        password: 'test',
+        password: hashedPassword,
         role: UserRole.admin,
       },
       { 
@@ -40,7 +40,7 @@ export default class ItemFixture extends BaseFixture {
         email: 'manager@gmail.com',
         firstName: 'manager',
         lastName: 'manager',
-        password: 'test',
+        password: hashedPassword,
         role: UserRole.manager,
       },
     ];

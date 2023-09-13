@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, UnauthorizedException, Injectable } from '@nestjs/common';
 import { translationKeys, EncryptionService } from 'src/common';
 import { User, UserDocument, UserRole, UserService } from 'src/user';
 import { AuthTokenOutput, CreateUserInput, LoginInput, RegisterInput } from '../dtos';
@@ -45,12 +45,12 @@ export class AuthService {
     const user = await this.userService.findOne({ email });
 
     if (!user) {
-      throw new BadRequestException(INVALID_CREDENTIALS);
+      throw new UnauthorizedException(INVALID_CREDENTIALS);
     }
 
     const isPasswordValid = await EncryptionService.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new BadRequestException(INVALID_CREDENTIALS);
+      throw new UnauthorizedException(INVALID_CREDENTIALS);
     }
 
     return this.tokenService.issueToken({
