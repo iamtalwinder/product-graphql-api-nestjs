@@ -268,6 +268,24 @@ type Query {
     id: String!
   ): Product!
 
+  """Get orders placed by the currently authenticated user."""
+  getUserOrders(
+    """Page number for pagination."""
+    page: Int = 1
+
+    """Number of orders per page."""
+    limit: Int = 20
+  ): GetOrdersOutput!
+
+  """Get all orders in the system. Restricted to admins and managers."""
+  getAllOrders(
+    """Page number for pagination."""
+    page: Int = 1
+
+    """Number of orders per page."""
+    limit: Int = 20
+  ): GetOrdersOutput!
+
   """Retrieve a list of inventory items with optional filters."""
   getInventory(
     """Filter options for inventory items."""
@@ -340,24 +358,6 @@ type Mutation {
     """Input data for placing a new order."""
     placeOrderInput: PlaceOrderInput!
   ): Order!
-
-  """Get orders placed by the currently authenticated user."""
-  getUserOrders(
-    """Page number for pagination."""
-    page: Int = 1
-
-    """Number of orders per page."""
-    limit: Int = 20
-  ): GetOrdersOutput!
-
-  """Get all orders in the system. Restricted to admins and managers."""
-  getAllOrders(
-    """Page number for pagination."""
-    page: Int = 1
-
-    """Number of orders per page."""
-    limit: Int = 20
-  ): GetOrdersOutput!
 
   """Create a new inventory item with the specified details."""
   createInventory(

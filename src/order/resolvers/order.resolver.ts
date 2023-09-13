@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, ResolveField, Parent, Context, Int } from '@nestjs/graphql';
+import { Resolver, Mutation, Query, Args, ResolveField, Parent, Context, Int } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { AuthenticatedRequest, JwtAuthGuard, Roles, RolesGuard } from 'src/common';
 import { Product, ProductService } from 'src/product';
@@ -26,7 +26,7 @@ export class OrderResolver {
     return this.orderService.placeOrder(placeOrderInput, req.user);
   }
 
-  @Mutation(() => GetOrdersOutput, { description: 'Get orders placed by the currently authenticated user.' })
+  @Query(() => GetOrdersOutput, { description: 'Get orders placed by the currently authenticated user.' })
   @Roles(UserRole.admin, UserRole.manager, UserRole.customer)
   async getUserOrders(
     @Context() context,
@@ -39,7 +39,7 @@ export class OrderResolver {
     return this.orderService.findAllWithFilterAndCount({ user: req.user.id }, page, limit);
   }
 
-  @Mutation(() => GetOrdersOutput, { description: 'Get all orders in the system. Restricted to admins and managers.' })
+  @Query(() => GetOrdersOutput, { description: 'Get all orders in the system. Restricted to admins and managers.' })
   @Roles(UserRole.admin, UserRole.manager)
   async getAllOrders(
     @Args('page', { type: () => Int, nullable: true, defaultValue: 1, description: 'Page number for pagination.' })
