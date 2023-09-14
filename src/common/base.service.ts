@@ -49,7 +49,6 @@ export abstract class BaseService<T extends Document> {
     }
 
     const documents = await query.exec();
-    console.log(documents);
     return { documents, totalCount };
   }
 
