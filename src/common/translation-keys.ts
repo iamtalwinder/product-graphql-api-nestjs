@@ -13,4 +13,7 @@ export const translationKeys = {
     notFound: 'product.not-found',
     outOfStock: 'product.out-of-stock',
   },
+  inventory: {
+    notFound: 'inventory.not-found',
+  }
 };

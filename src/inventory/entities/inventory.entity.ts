@@ -17,11 +17,9 @@ export class Inventory extends Base {
   @Field(() => [InventoryLocation], { description: 'A list of locations where the product is stored.' })
   @Prop({ type: [InventoryLocation], default: [] })
   inventoryLocations: InventoryLocation[];
-
-  getTotalQuantity: Function;
 }
 
-export type InventoryDocument = Inventory & Document;
+export type InventoryDocument = Inventory & Document & { getTotalQuantity: Function };
 
 export const InventorySchema: Schema = SchemaFactory.createForClass(Inventory);
 

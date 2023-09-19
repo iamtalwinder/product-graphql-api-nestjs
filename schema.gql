@@ -289,13 +289,13 @@ type Query {
   """Retrieve a list of inventory items with optional filters."""
   getInventory(
     """Filter options for inventory items."""
-    filter: InventoryFilterInput
+    filter: InventoryFilterInput = {}
 
     """Page number for pagination."""
-    page: Int
+    page: Int = 1
 
     """Number of inventory items per page."""
-    limit: Int
+    limit: Int = 20
   ): GetInventoryOutput!
 
   """Retrieve a single inventory item by its ID."""
